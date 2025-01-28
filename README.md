@@ -5,3 +5,5 @@ I’ve used different distributions of linux for different purposes, like instal
 I’ve done some web programming to the extent of making myself and hosting a static portfolio website. For that project, I used the following: html/css/tailwind/bootstrap studio/JS/NJS/Express.  
 I enjoyed the process of web development it’s something I haven’t done in a while, and I want to be better at. 
 I want to learn the techniques and knowledge that you have to offer to apply to my future career in the field.  
+
+![alt text](https://github.com/DiMino-0/WebProgrammingINCLASS/blob/main/readMePhoto.png?raw=true)
