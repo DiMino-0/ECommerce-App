@@ -1,19 +1,24 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import NavBar from './components/NavBar.vue'
 </script>
 
 <template>
   <header>
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-      <nav class="navbar">
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
+    <NavBar />
   </header>
 
-  <RouterView />
+  <div class="container body-container">
+    <RouterView />
+  </div>
 </template>
 
-<style></style>
+<style>
+body {
+  background-color: white;
+}
+.body-container {
+  margin-top: 20px;
+  background-color: white;
+}
+</style>
