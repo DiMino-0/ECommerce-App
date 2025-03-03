@@ -1,7 +1,7 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <h1 class="title has-text-black is-1">This is the About page!</h1>
   </div>
 </template>
 
-<style></style>
+<style lang="css" scoped></style>
