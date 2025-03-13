@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import NavBar from './components/NavBar.vue'
-import NotificationFeedback from './components/NotificationFeedback.vue'
+import SlidingDrawer from './components/SlidingDrawer.vue'
+import ShoppingCart from './components/ShoppingCart.vue'
+import NotificationList from './components/NotificationList.vue'
 </script>
 
 <template>
@@ -10,18 +12,22 @@ import NotificationFeedback from './components/NotificationFeedback.vue'
   </header>
 
   <div class="container body-container">
-    <NotificationFeedback />
+    <NotificationList />
     <RouterView />
   </div>
+
+  <SlidingDrawer>
+    <ShoppingCart />
+  </SlidingDrawer>
 </template>
 
 <style>
 body {
-  background-color: antiquewhite;
+  background-color: aliceblue;
 }
+
 .body-container {
   background-color: white;
-  margin-top: 20px;
   height: 100vh;
   padding: 1rem;
 }

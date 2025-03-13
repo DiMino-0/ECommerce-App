@@ -38,11 +38,7 @@ const showBurger = ref(false)
         </div>
 
         <div class="navbar-end">
-          <div class="navbar-item">
-            <RouterLink to="/login" class="button is-primary">
-              <strong>Login</strong>
-            </RouterLink>
-          </div>
+          <div class="navbar-item"></div>
         </div>
       </div>
     </div>

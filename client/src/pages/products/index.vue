@@ -48,6 +48,8 @@ function addToCart(product: Product) {
   color: crimson;
   font-weight: bold;
   font-size: 1.5em;
+  display: block;
+  margin: 1em;
 }
 
 .button.is-success {
