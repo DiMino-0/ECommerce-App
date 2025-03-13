@@ -2,6 +2,14 @@
 import { ref } from 'vue'
 
 const showBurger = ref(false)
+
+const props = defineProps<{
+  isShoppingCartOpen?: boolean
+}>()
+
+const events = defineEmits<{
+  modelUpdate: [Boolean]
+}>()
 </script>
 
 <template>
@@ -38,6 +46,15 @@ const showBurger = ref(false)
         </div>
 
         <div class="navbar-end">
+          <div class="navbar-item">
+            <button
+              class="button"
+              :class="{ 'is-active': props.isShoppingCartOpen }"
+              v-on:click="events('modelUpdate', !props.isShoppingCartOpen)"
+            >
+              <i class="fas fa-shopping-cart"></i>
+            </button>
+          </div>
           <div class="navbar-item"></div>
         </div>
       </div>
