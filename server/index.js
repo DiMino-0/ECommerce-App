@@ -7,8 +7,7 @@ app
   .get("/", (req, res) => {
     res.send("Hello World!");
   })
-  .use("/products", productsController);
-
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+  .use("/products", productsController)
+  .listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+  });

@@ -7,27 +7,54 @@ router
       {
         id: 1,
         name: "Product 1",
+        price: 10.99,
       },
       {
         id: 2,
         name: "Product 2",
+        price: 20.99,
       },
-      "banana",
-      "orange",
+      {
+        id: 3,
+        name: "Product 3",
+        price: 30.99,
+      },
     ]);
   })
   .get("/:id", (req, res) => {
     const { id } = req.params;
-    res.send({ id, name: "Product ${id}" });
+
+    res.send({
+      id,
+      name: `Product ${id}`,
+      price: 10.99 * id,
+    });
+  })
+  .post("/", (req, res) => {
+    const { name, price } = req.body;
+
+    res.send({
+      id: 4,
+      name,
+      price,
+    });
   })
   .patch("/:id", (req, res) => {
     const { id } = req.params;
-    const { name } = req.body;
-    res.send({ id, name });
+    const { name, price } = req.body;
+
+    res.send({
+      id,
+      name,
+      price,
+    });
   })
   .delete("/:id", (req, res) => {
     const { id } = req.params;
-    res.send({ id, message: "Product deleted" });
+
+    res.send({
+      message: `Product ${id} deleted`,
+    });
   });
 
 module.exports = router;
