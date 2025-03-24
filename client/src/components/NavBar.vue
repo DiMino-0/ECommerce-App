@@ -8,7 +8,7 @@ const props = defineProps<{
 }>()
 
 const events = defineEmits<{
-  modelUpdate: [Boolean]
+  modelUpdate: [boolean]
 }>()
 </script>
 
@@ -62,4 +62,11 @@ const events = defineEmits<{
   </nav>
 </template>
 
-<style scoped></style>
+<style scoped>
+.cart-length {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 50%;
+}
+</style>

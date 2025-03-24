@@ -8,7 +8,7 @@ const product = getOne(route.params.id)
 
 <template>
   <div>
-    <div class="product">
+    <div class="product section">
       <div class="product-images">
         <img v-for="i in product.images" :src="i" alt="product image" />
       </div>
@@ -34,5 +34,13 @@ const product = getOne(route.params.id)
   flex-basis: 50%;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: palevioletred;
+  display: block;
+  margin: 1em;
 }
 </style>

@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
 const props = defineProps<{
-  open?: boolean
+  isOpen?: boolean
 }>()
 </script>
 
 <template>
-  <div class="sliding-drawer" :class="{ open: props.open }">
+  <div class="sliding-drawer" :class="{ open: props.isOpen }">
     <slot></slot>
   </div>
 </template>
@@ -18,10 +16,10 @@ const props = defineProps<{
   top: 50px;
   bottom: 0;
   right: 0;
-  width: 20rem;
+  width: 30rem;
   background-color: white;
   box-shadow: -1px 0 7px rgba(0, 0, 0, 0.5);
-  transform: translateX(18rem);
+  transform: translateX(95%);
   transition: transform 0.3s ease-out;
 }
 

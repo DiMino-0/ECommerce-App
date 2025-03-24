@@ -6,11 +6,13 @@ import NavBar from './components/NavBar.vue'
 import SlidingDrawer from './components/SlidingDrawer.vue'
 import ShoppingCart from './components/ShoppingCart.vue'
 import NotificationList from '@/components/NotificationList.vue'
+
+const isShoppingCartOpen = ref(false)
 </script>
 
 <template>
   <header>
-    <NavBar />
+    <NavBar v-model:is-cart-open="isShoppingCartOpen" />
   </header>
 
   <div class="container body-container">
@@ -18,7 +20,7 @@ import NotificationList from '@/components/NotificationList.vue'
     <RouterView />
   </div>
 
-  <SlidingDrawer>
+  <SlidingDrawer :isOpen="isShoppingCartOpen">
     <ShoppingCart />
   </SlidingDrawer>
 </template>
@@ -32,5 +34,6 @@ body {
   background-color: white;
   height: 100vh;
   padding: 1rem;
+  padding-top: 4em;
 }
 </style>
