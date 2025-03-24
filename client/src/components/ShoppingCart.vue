@@ -5,22 +5,26 @@ const cart = refCart()
 </script>
 
 <template>
-  <div class="cart has-text-black container">
-    <h1 class="title is-2 has-text-black">Shopping Cart</h1>
-    <h2 class="title is-4 has-text-black">Items in Cart: {{ cart.length }}</h2>
+  <div class="cart">
+    <h2 class="title is-4">Shopping Cart ({{ cart.length }})</h2>
     <ul>
-      <li v-for="item in cart" :key="item.product.id">{{ item.product.title }} - {{ item.product.price }}
-        <img :src="item.product.thumbnail" :alt="item.product.title">
-      </img>
+      <li v-for="item in cart" :key="item.product.id">
+        <img :src="item.product.thumbnail" :alt="item.product.title" />
         <span>
-          x ${{ item.product.price }}
+          {{ item.product.title }}
         </span>
         <span>
-          = ${{ item.product.price * item.quantity }}
+          <select v-model="item.quantity">
+            <option v-for="n in 10" :key="n" :value="n">
+              {{ n }}
+            </option>
+          </select>
         </span>
+        <span> x ${{ item.product.price }} </span>
+        <span> = ${{ item.product.price * item.quantity }} </span>
       </li>
     </ul>
-    <h2 class="title is-4 has-text-black">
+    <h2 class="title is-4">
       Total: ${{ cart.reduce((acc, item) => acc + item.product.price * item.quantity, 0) }}
     </h2>
   </div>
@@ -29,5 +33,16 @@ const cart = refCart()
 <style scoped>
 .cart {
   margin: 1rem;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  img {
+    width: 50px;
+    height: 50px;
+  }
 }
 </style>
