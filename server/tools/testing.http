@@ -1,0 +1,6 @@
+###
+GET https://google.com/search?q=hello+world
+
+###
+
+GET https://dummyjson.com/products

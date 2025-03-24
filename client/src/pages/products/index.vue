@@ -1,28 +1,27 @@
 <script setup lang="ts">
+import { refCart, addToCart } from '@/models/cart'
 import { getAll, type Product } from '@/models/products'
 
 const products = getAll()
 
-function addToCart(product: Product) {
-  console.log('Add to cart', product)
-}
+const cart = refCart()
 </script>
 
 <template>
   <div>
     <h1 class="title">Products</h1>
     <div class="shelf">
-      <div class="product" v-for="p in products.items" :key="p.id">
+      <div class="product" v-for="product in products.items" :key="product.id">
         <div class="product-image">
-          <RouterLink :to="`/products/${p.id}`">
-            <img :src="p.thumbnail" alt="product image" />
+          <RouterLink :to="`/products/${product.id}`">
+            <img :src="product.thumbnail" alt="product image" />
           </RouterLink>
         </div>
         <div class="product-info">
-          <h2>{{ p.title }}</h2>
-          <p>{{ p.description }}</p>
-          <span class="price">${{ p.price }}</span>
-          <button class="button is-success" @click="addToCart(p)">Add to cart</button>
+          <h2>{{ product.title }}</h2>
+          <p>{{ product.description }}</p>
+          <span class="price">${{ product.price }}</span>
+          <button class="button is-success" @click="addToCart(product)">Add to cart</button>
         </div>
       </div>
     </div>
