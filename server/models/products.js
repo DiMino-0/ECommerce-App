@@ -1,38 +1,52 @@
 const data = require("../data/products.json");
 
-function getAll() {
+async function getAll() {
   return data;
 }
 
-function getById(id) {
-  return data.find((product) => product.id === id);
+async function get(id) {
+  const item = data.items.find((item) => item.id == id);
+  if (!item) {
+    throw new Error("Item not found", { status: 404 });
+  }
+  return item;
 }
 
-function create(product) {
-  const newProduct = { id: data.length + 1, ...product };
-  data.push(newProduct);
-  return newProduct;
+async function create(item) {
+  const newItem = {
+    id: data.items.length + 1,
+    ...item,
+  };
+  data.items.push(newItem);
+  return newItem;
 }
 
-function update(id, product) {
-  const index = data.findIndex((product) => product.id === id);
-  if (index === -1) return null;
-
-  const updatedProduct = { ...data[index], ...product };
-  data[index] = updatedProduct;
-  return updatedProduct;
+async function update(id, item) {
+  const index = data.items.findIndex((item) => item.id == id);
+  if (index === -1) {
+    return null;
+  }
+  const updatedItem = {
+    ...data.items[index],
+    ...item,
+  };
+  data.items[index] = updatedItem;
+  return updatedItem;
 }
 
-function remove(id) {
-  const index = data.findIndex((product) => product.id === id);
-  if (index === -1) return null;
-  const removedProduct = data.splice(index, 1);
-  return removedProduct;
+async function remove(id) {
+  const index = data.items.findIndex((item) => item.id == id);
+  if (index === -1) {
+    return null;
+  }
+  const deletedItem = data.items[index];
+  data.items.splice(index, 1);
+  return deletedItem;
 }
 
 module.exports = {
   getAll,
-  getById,
+  get,
   create,
   update,
   remove,
