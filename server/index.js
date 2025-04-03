@@ -1,15 +1,15 @@
 const express = require("express");
 const productsController = require("./controllers/products");
+const { statusCodes } = require("./models/errors");
 const app = express();
 const PORT = 8000;
 
 // Middleware
-app.use(express.json()); // Parse JSON request body
-//controller middleware
+app.use(express.json());
+
 app
-  .get("/", (req, res) => {
-    res.send("Hello World");
-  })
+  .use("/", express.static("dist"))
+  //controllers
   .use("/api/v1/products", productsController);
 
 //error handling middleware
@@ -19,13 +19,10 @@ app.use((err, req, res, next) => {
 
   const error = {
     status,
-    message: err.message || "Internal Server Error",
+    message: err.message || statusCodes.INTERNAL_SERVER_ERROR,
   };
   res.status(status).send(error);
 });
-
-// Listen on port 8000, IP defaults to
-//
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
