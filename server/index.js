@@ -9,6 +9,20 @@ const PORT = process.env.PORT ?? 8000;
 app.use(express.json());
 
 app
+  //CORS
+  .use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
+    res.header(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PUT, DELETE, OPTIONS"
+    );
+    next();
+  })
+  // Serve static files from the dist directory
   .use("/", express.static("dist"))
   //controllers
   .use("/api/v1/products", productsController);

@@ -11,7 +11,7 @@ router
       })
       .catch(next);
   })
-  .get("/:id", async (req, res, next) => {
+  .get("/:id", (req, res, next) => {
     const { id } = req.params;
 
     model
@@ -49,6 +49,26 @@ router
       .remove(id)
       .then((data) => {
         res.send(data);
+      })
+      .catch(next);
+  })
+  .get("/search/:query", (req, res, next) => {
+    const { query } = req.params;
+
+    model
+      .search(query)
+      .then((data) => {
+        res.send(data);
+      })
+      .catch(next);
+  })
+  .post("/seed", (req, res, next) => {
+    const { data } = req.body;
+
+    model
+      .seed(data)
+      .then((data) => {
+        res.status(201).send(data);
       })
       .catch(next);
   });

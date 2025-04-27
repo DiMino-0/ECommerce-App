@@ -1,26 +1,13 @@
 <script setup lang="ts"></script>
-
 <template>
   <main>
-    <!-- Feedback Form -->
-    <h1>Feedback Form</h1>
-    <form>
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" required />
-
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required />
-
-      <label for="feedback">Feedback:</label>
-      <textarea id="feedback" name="feedback" required></textarea>
-
-      <button type="submit">Submit</button>
+    <h1 class="title" style="color: darkorchid">Anonymous Feedback Form</h1>
+    <h2 class="subtitle">Enter your feedback here...</h2>
+    <form action="#" class="form" method="get">
+      <textarea class="textarea" placeholder="Tell me about your favorite class"> </textarea>
+      <button class="button is-success" type="submit">Submit</button>
     </form>
   </main>
 </template>
 
-<style lang="css" scoped>
-form {
-  color: tomato;
-}
-</style>
+<style lang="css" scoped></style>
