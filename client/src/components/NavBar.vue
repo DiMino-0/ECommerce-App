@@ -20,8 +20,8 @@ const event = defineEmits<{
   <nav class="navbar is-info is-fixed-top" role="navigation" aria-label="main navigation">
     <div class="container">
       <div class="navbar-brand">
-        <a class="navbar-item" href="https://jewpaltz.com">
-          <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="30" />
+        <a class="navbar-item" href="">
+          <img alt="Logo Ipsum logo" class="logo" src="@/assets/logoipsum.svg" width="30" />
         </a>
 
         <a
