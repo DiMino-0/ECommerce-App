@@ -2,13 +2,13 @@
 -- Create the users table
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
+    firstName VARCHAR(255) NOT NULL,
+    lastName VARCHAR(255) NOT NULL,
     age INT NOT NULL,
     gender VARCHAR(50),
     email VARCHAR(255) UNIQUE NOT NULL,
     phone VARCHAR(50),
-    birth_date DATE,
+    birthDate DATE,
     image TEXT,
     university VARCHAR(255),
     role VARCHAR(50) NOT NULL
@@ -74,3 +74,8 @@ CREATE TABLE order_items (
 CREATE INDEX idx_orders_user_id ON orders(user_id);
 CREATE INDEX idx_order_items_order_id ON order_items(order_id);
 CREATE INDEX idx_order_items_product_id ON order_items(product_id);
+-- The following SQL statements are used to allow aggregate functions in PostgREST
+ALTER ROLE authenticator
+SET pgrst.db_aggregates_enabled = 'true';
+NOTIFY pgrst,
+'reload config';
