@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { addToCart } from '@/models/cart'
-import type { DataListEnvelope } from '@/models/dataEnvelopes'
+import { type DataListEnvelope } from '@/models/dataEnvelopes'
 import { getAll, type Product } from '@/models/products'
 import { ref } from 'vue'
 
@@ -44,6 +44,9 @@ function doAddToCart(product: Product) {
 }
 
 .shelf .product {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 30%;
   margin: 1em;
   padding: 1em;

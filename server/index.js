@@ -1,31 +1,38 @@
-require("dotenv").config();
+// Load the http module to create an http server.
 const express = require("express");
 const productsController = require("./controllers/products");
-const { statusCodes } = require("./models/errors");
-const app = express();
+const usersController = require("./controllers/users");
+require("dotenv").config();
+
 const PORT = process.env.PORT ?? 8000;
 
+const app = express();
+
 // Middleware
+// CORS
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
 app.use(express.json());
 
+//Controllers
 app
-  //CORS
-  .use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    res.header(
-      "Access-Control-Allow-Methods",
-      "GET, POST, PUT, DELETE, OPTIONS"
-    );
-    next();
+  .get("/hello", (req, res) => {
+    res.send("Hello New Paltz, NY!!!");
   })
-  // Serve static files from the dist directory
-  .use("/", express.static("dist"))
-  //controllers
-  .use("/api/v1/products", productsController);
+  .use("/api/v1/products", productsController)
+  .use("/api/v1/users", usersController)
+
+  .use("/", express.static("dist"));
 
 //error handling middleware
 app.use((err, req, res, next) => {
@@ -34,14 +41,18 @@ app.use((err, req, res, next) => {
 
   const error = {
     status,
-    message: err.message || statusCodes.INTERNAL_SERVER_ERROR,
+    message: err.message || "Internal Server Error",
   };
   res.status(status).send(error);
 });
 
+// Listen on port 8000, IP defaults to
+
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}
-    -${process.env.INCLASS}-`);
+  console.log(`
+      Welcome to the best class at New Paltz - ${process.env.BEST_CLASS}
+      Server running at http://localhost:${PORT}/
+    `);
 });
 
 /*

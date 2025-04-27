@@ -1,4 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+var bestClass = 'Web Programming'
+</script>
+
 <template>
   <main>
     <h1 class="title" style="color: darkorchid">Anonymous Feedback Form</h1>
@@ -9,5 +12,3 @@
     </form>
   </main>
 </template>
-
-<style lang="css" scoped></style>
