@@ -2,7 +2,7 @@
  */
 import { ref } from 'vue'
 import type { Product } from './products'
-import { addNotification } from './Notifications'
+import { addNotification } from './notifications'
 
 export interface CartItem {
   product: Product
