@@ -1,29 +1,36 @@
 <script setup lang="ts">
+import { refCart } from '@/models/cart'
 import { ref } from 'vue'
+import LoginBadge from './LoginBadge.vue'
 
-const showBurger = ref(false)
+const isActive = ref(false)
+
+const cart = refCart()
 
 const props = defineProps<{
   isShoppingCartOpen?: boolean
 }>()
 
-const events = defineEmits<{
-  modelUpdate: [boolean]
+const event = defineEmits<{
+  'update:isShoppingCartOpen': [boolean]
 }>()
 </script>
 
 <template>
-  <nav class="navbar is-success" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-info is-fixed-top" role="navigation" aria-label="main navigation">
     <div class="container">
       <div class="navbar-brand">
+        <a class="navbar-item" href="https://jewpaltz.com">
+          <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="30" />
+        </a>
+
         <a
           role="button"
-          class="navbar-burger has-text-black"
+          class="navbar-burger"
           aria-label="menu"
           aria-expanded="false"
-          v-bind:class="{ 'is-active': showBurger.valueOf() }"
-          v-on:click="showBurger = !showBurger.valueOf()"
-          data-target="navbar-items"
+          :class="{ 'is-active': isActive }"
+          @click="isActive = !isActive"
         >
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
@@ -32,30 +39,41 @@ const events = defineEmits<{
         </a>
       </div>
 
-      <div
-        id="navbar-items"
-        class="navbar-menu"
-        v-bind:class="{ 'is-active': showBurger.valueOf() }"
-      >
+      <div class="navbar-menu" :class="{ 'is-active': isActive }">
         <div class="navbar-start">
           <RouterLink to="/" class="navbar-item">Home</RouterLink>
-
+          <RouterLink to="/products" class="navbar-item">Products</RouterLink>
           <RouterLink to="/about" class="navbar-item">About</RouterLink>
 
-          <RouterLink to="/products" class="navbar-item">Products</RouterLink>
+          <a class="navbar-item"> Documentation </a>
+
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link"> More </a>
+
+            <div class="navbar-dropdown">
+              <a class="navbar-item"> About </a>
+              <a class="navbar-item is-selected"> Jobs </a>
+              <a class="navbar-item"> Contact </a>
+              <hr class="navbar-divider" />
+              <a class="navbar-item"> Report an issue </a>
+            </div>
+          </div>
         </div>
 
         <div class="navbar-end">
           <div class="navbar-item">
             <button
-              class="button"
+              class="button is-light"
               :class="{ 'is-active': props.isShoppingCartOpen }"
-              v-on:click="events('modelUpdate', !props.isShoppingCartOpen)"
+              @click="event('update:isShoppingCartOpen', !props.isShoppingCartOpen)"
             >
-              <i class="fas fa-shopping-cart"></i>
+              <span class="icon"> <i class="fas fa-shopping-cart"></i></span>
             </button>
+            <span class="cart-length tag is-danger">{{ cart.length }}</span>
           </div>
-          <div class="navbar-item"></div>
+          <div class="navbar-item">
+            <LoginBadge />
+          </div>
         </div>
       </div>
     </div>
