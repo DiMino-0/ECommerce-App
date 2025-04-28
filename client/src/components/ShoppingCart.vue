@@ -5,7 +5,7 @@ const cart = refCart()
 </script>
 
 <template>
-  <div class="cart">
+  <div class="cart has-text-black">
     <h2 class="title is-4">Shopping Cart ({{ cart.length }})</h2>
     <ul>
       <li v-for="item in cart" :key="item.product.id">
