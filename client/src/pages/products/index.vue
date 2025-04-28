@@ -16,8 +16,8 @@ function doAddToCart(product: Product) {
 </script>
 
 <template>
-  <div>
-    <h1 class="title">Products</h1>
+  <div class="has-text-black">
+    <h1 class="title has-text-black">Products</h1>
     <div class="shelf">
       <div class="product" v-for="p in products.items" :key="p.id">
         <div class="product-image">

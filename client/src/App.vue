@@ -41,5 +41,6 @@ body {
   padding-top: 4em;
   margin-bottom: 2rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  color: black;
 }
 </style>
