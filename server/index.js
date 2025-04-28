@@ -4,7 +4,7 @@ const productsController = require("./controllers/products");
 const usersController = require("./controllers/users");
 require("dotenv").config();
 
-const PORT = process.env.PORT ?? 8000;
+const PORT = process.env.PORT ?? 3001;
 
 const app = express();
 

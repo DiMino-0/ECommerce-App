@@ -16,6 +16,7 @@ const isShoppingCartOpen = ref(false)
 
   <div class="container body-container">
     <NotificationList />
+
     <RouterView />
   </div>
 
@@ -27,12 +28,18 @@ const isShoppingCartOpen = ref(false)
 <style>
 body {
   background-color: aliceblue;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .body-container {
   background-color: white;
-  height: 100vh;
+  flex-grow: 1;
+  min-height: 100%;
   padding: 1rem;
   padding-top: 4em;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 </style>
