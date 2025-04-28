@@ -1,5 +1,3 @@
-/* B"H
- */
 import { ref } from 'vue'
 import type { Product } from './products'
 import { addNotification } from './notifications'
@@ -28,7 +26,7 @@ export function addToCart(product: Product, quantity: number = 1) {
     cart.value.push({ product, quantity })
 
     addNotification({
-      message: '${product.title} added to cart.',
+      message: `${product.title} added to cart.`,
       type: 'success',
     })
   }
