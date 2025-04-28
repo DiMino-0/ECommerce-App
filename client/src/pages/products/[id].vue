@@ -2,6 +2,10 @@
 import { getOne, type Product } from '@/models/products'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+dayjs.extend(relativeTime)
 
 const route = useRoute('/products/[id]')
 const product = ref<Product>()
@@ -13,7 +17,7 @@ getOne(route.params.id).then((response) => {
 
 <template>
   <div>
-    <div class="product section" v-if="product">
+    <div class="product section has-text-black" v-if="product">
       <div class="product-images">
         <img v-for="i in product.images" :src="i" alt="product image" />
       </div>
@@ -39,7 +43,8 @@ getOne(route.params.id).then((response) => {
                 {{ review.rating }} stars
                 <p>{{ review.comment }}</p>
                 <i>
-                  {{ review.date }}
+                  <!-- 4/28 currently date is displayed with the time created pulled from db, updating to more modern format using dayjs ex: 5 months ago -->
+                  {{ dayjs(review.date).fromNow() }}
                 </i>
               </div>
             </li>
