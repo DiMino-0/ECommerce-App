@@ -13,6 +13,12 @@ getAll().then((response) => {
 function doAddToCart(product: Product) {
   addToCart(product)
 }
+
+interface Rateable {
+  product_reviews: {
+    average_rating: number
+  }
+}
 </script>
 
 <template>
@@ -26,17 +32,26 @@ function doAddToCart(product: Product) {
           </RouterLink>
         </div>
         <div class="product-info">
+          <b-rate
+            v-model="(p as any as Rateable).product_reviews.average_rating"
+            disabled
+            show-score
+          ></b-rate>
           <h2>{{ p.title }}</h2>
           <p>{{ p.description }}</p>
           <span class="price">${{ p.price }}</span>
           <button class="button is-success" @click="doAddToCart(p)">Add to cart</button>
         </div>
       </div>
+      <!-- {{ p }} if you do this with an object you can quickly view the json -->
     </div>
   </div>
 </template>
 
 <style scoped>
+.rate {
+  float: right;
+}
 .shelf {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
