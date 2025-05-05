@@ -2,6 +2,7 @@
 const express = require("express");
 const productsController = require("./controllers/products");
 const usersController = require("./controllers/users");
+const reviewsController = require("./controllers/reviews");
 require("dotenv").config();
 
 const PORT = process.env.PORT ?? 3001;
@@ -30,6 +31,7 @@ app
     res.send("Hello New Paltz, NY!!!");
   })
   .use("/api/v1/products", productsController)
+  .use("/api/v1/reviews", reviewsController)
   .use("/api/v1/users", usersController)
 
   .use("/", express.static("dist"));

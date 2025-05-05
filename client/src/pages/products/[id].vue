@@ -1,59 +1,117 @@
 <script setup lang="ts">
+import { askGemini } from '@/models/google'
+import { api } from '@/models/myFetch'
 import { getOne, type ProductReview, type Product } from '@/models/products'
-import { computed, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { create, remove, update } from '@/models/reviews'
+import { refSession } from '@/models/session'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { refSession } from '@/models/session'
-import type { User } from '@/models/users'
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
 
 dayjs.extend(relativeTime)
 
 const route = useRoute('/products/[id]')
 const product = ref<Product>()
 
-const session = refSession()
-// watch(session.value.user, (user: User | null) => {
-//   new_review.value?.reviewer ? = user;
-// })
-
-async function submitReview() {
-  if (!session.value.user) {
-    return
-  }
-  // const review = api('reviews', {
-  //   method: 'POST',
-  //   body: JSON.stringify(new_review),
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
-  // })
-}
-const new_review = ref<Partial<ProductReview>>({
-  id: 0,
+const newReview = ref<Partial<ProductReview>>({
   rating: 0,
+  comment: '',
 })
+
+const session = refSession()
 
 getOne(route.params.id).then((response) => {
   product.value = response
 })
 
-//example of functional programming, use reduce to get a count, sum, avg. To get one value from a list
 const avg_rating = computed(
   () =>
-    product.value?.reviews?.reduce((acc, review) => acc + (review?.rating ?? 0), 0) ??
-    0 / (product.value?.reviews?.length ?? 0),
+    (product.value?.reviews?.reduce((acc, review) => acc + (review?.rating ?? 0), 0) ?? 0) /
+    (product.value?.reviews?.length ?? 1),
 )
+
+async function createReview() {
+  if (!session.value.user) {
+    return
+  }
+  const review = {
+    ...newReview.value,
+    product_id: product.value?.id,
+    reviewer_id: session.value.user.id,
+    date: new Date().toLocaleDateString(),
+  } as ProductReview
+
+  const response = await create(review)
+
+  product.value?.reviews?.push(response)
+
+  newReview.value = {
+    rating: 0,
+    comment: '',
+  }
+}
+
+async function deleteReview(id: number) {
+  const response = await remove(id)
+  // if no exception was thrown, then the review was deleted
+  product.value?.reviews?.splice(
+    product.value.reviews.findIndex((r) => r.id === id),
+    1,
+  )
+}
+
+async function startEdit(review: ProductReview) {
+  newReview.value = {
+    ...review,
+  }
+}
+
+async function updateReview() {
+  if (!newReview.value.id) {
+    return
+  }
+  const response = await update(newReview.value.id, newReview.value as ProductReview)
+
+  product.value?.reviews?.splice(
+    product.value.reviews.findIndex((r) => r.id === newReview.value.id),
+    1,
+    response,
+  )
+
+  newReview.value = {
+    rating: 0,
+    comment: '',
+  }
+}
+
+async function SubmitReview() {
+  if (newReview.value.id) {
+    await updateReview()
+  } else {
+    await createReview()
+  }
+}
+
+async function suggestReview() {
+  const response = await askGemini(
+    `Write a review for a product with the following details: ${product.value?.title} - ${product.value?.description} - ${product.value?.category} - ${product.value?.brand} - ${product.value?.tags?.join(' / ')}
+        The review should reflect the following rating: ${newReview.value.rating} on a scale of 1 to 5 and be less than 250 characters long.
+        ${newReview.value.comment}`,
+  )
+  console.log(response)
+  newReview.value.comment = response
+}
 </script>
 
 <template>
   <div>
-    <div class="product section has-text-black" v-if="product">
+    <div class="product section" v-if="product">
       <div class="product-images">
         <img v-for="i in product.images" :src="i" alt="product image" />
       </div>
       <div class="product-info">
-        <b-rate v-model="avg_rating" disabled show-score></b-rate>
+        <b-rate v-model="avg_rating" disabled show-score size="is-large"></b-rate>
         <h1 class="title">
           {{ product.title }}
         </h1>
@@ -69,39 +127,60 @@ const avg_rating = computed(
           Reviews:
           <ul>
             <li class="card" v-for="review in product.reviews" :key="review.id">
+              <div
+                v-if="review.reviewer_id == session.user?.id || session.user?.role == 'admin'"
+                class="buttons has-addons"
+                style="float: right"
+              >
+                <button class="button is-small" @click="startEdit(review)">
+                  <span class="icon is-small">
+                    <i class="fas fa-edit"></i>
+                  </span>
+                </button>
+                <button class="button is-small" @click="deleteReview(review.id)">
+                  <span class="icon is-small">
+                    <i class="fas fa-trash"></i>
+                  </span>
+                </button>
+              </div>
+
               <div class="card-content">
                 <img :src="review.reviewer?.image" alt="reviewer avatar" class="avatar" />
                 <strong>{{ review.reviewer?.firstName }} {{ review.reviewer?.lastName }}</strong> -
-                {{ review.rating }} stars
+
                 <b-rate v-model="review.rating" disabled show-score></b-rate>
+
                 <p>{{ review.comment }}</p>
                 <i>
-                  <!-- 4/28 currently date is displayed with the time created pulled from db, updating to more modern format using dayjs ex: 5 months ago -->
                   {{ dayjs(review.date).fromNow() }}
                 </i>
               </div>
             </li>
           </ul>
-          <form class="card" v-if="session.user" @submit.prevent="submitReview">
+          <form class="card" v-if="session.user" @submit.prevent="SubmitReview">
             <div class="card-content">
-              <label class="label">Review: </label>
-              <b-rate v-model="avg_rating" show-score></b-rate>
-              <div class="field">
-                <img :src="session.user.image" alt="user avatar" class="avatar" />
-                <strong>{{ session.user.firstName }} {{ session.user.lastName }}</strong>
-                <div class="control">
-                  <textarea class="textarea" placeholder="Leave your rating here!"></textarea>
-                </div>
-                <!-- submit button -->
-                <div class="control">
-                  <button class="button">Submit</button>
-                </div>
+              <img :src="session.user?.image" alt="reviewer avatar" class="avatar" />
+              <strong>{{ session.user?.firstName }} {{ session.user?.lastName }}</strong>
+
+              <b-rate v-model="newReview.rating" show-score></b-rate>
+              <textarea
+                v-model="newReview.comment"
+                class="textarea"
+                placeholder="Leave a review"
+              ></textarea>
+
+              <div style="display: flex; justify-content: space-between">
+                <button class="button is-success">Submit</button>
+                <button class="button" @click.prevent="suggestReview">
+                  <span class="icon">
+                    <i class="fas fa-magic"></i>
+                  </span>
+                </button>
               </div>
             </div>
           </form>
           <div v-else>
-            <p>Please login to leave a review</p>
-            <router-link to="/login" class="button">Login</router-link>
+            <p>You need to be logged in to leave a review</p>
           </div>
         </div>
       </div>
